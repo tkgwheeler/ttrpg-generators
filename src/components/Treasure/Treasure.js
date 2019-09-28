@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Art from "./Art/Art";
+import Jewelry from "./Jewelry/Jewelry";
 import TreasureContainer from "./TreasureContainer/TreasureContainer";
 
 const Treasure = () => {
@@ -28,6 +29,7 @@ const Treasure = () => {
       <h2>{treasure}</h2>
       <TreasureContainer weightedRandomBag={weightedRandomBag} />
       <Art weightedRandomBag={weightedRandomBag} />
+      <Jewelry weightedRandomBag={weightedRandomBag} />
     </div>
   );
 };
