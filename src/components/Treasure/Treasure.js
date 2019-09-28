@@ -5,6 +5,7 @@ import Coins from "./Coins/Coins";
 import Goods from "./Goods/Goods";
 import Jewelry from "./Jewelry/Jewelry";
 import TreasureContainer from "./TreasureContainer/TreasureContainer";
+import TreasureItem from "./TreasureItem/TreasureItem";
 
 const Treasure = () => {
   const [treasure, setTreasure] = useState("");
@@ -25,15 +26,19 @@ const Treasure = () => {
     return foundItem.name;
   };
 
+  const handleClick = () => {
+    let treasureType = {
+      type: weightedRandomBag(treasureTypes),
+    };
+    setTreasure(treasureType);
+  };
+
   return (
     <div>
       <h1>Treasure</h1>
-      <h2>{treasure}</h2>
-      <TreasureContainer weightedRandomBag={weightedRandomBag} />
-      <Art weightedRandomBag={weightedRandomBag} />
-      <Jewelry weightedRandomBag={weightedRandomBag} />
-      <Goods weightedRandomBag={weightedRandomBag} />
-      <Coins weightedRandomBag={weightedRandomBag} />
+      <button onClick={() => handleClick()}>Treasure Type</button>
+      <h2>{treasure.type}</h2>
+      <TreasureItem treasure={treasure} weightedRandomBag={weightedRandomBag} />
     </div>
   );
 };
@@ -57,16 +62,25 @@ const treasureTypes = [
     name: "Coins",
     weight: 6,
   },
-  {
-    name: "Furnishings and clothing",
-    weight: 4,
-  },
-  {
-    name: "Gems",
-    weight: 2,
-  },
-  {
-    name: "Special and Magic Items",
-    weight: 1,
-  },
 ];
+
+// {
+//     name: "Furnishings and clothing",
+//     weight: 4,
+//   },
+//   {
+//     name: "Gems",
+//     weight: 2,
+//   },
+//   {
+//     name: "Special and Magic Items",
+//     weight: 1,
+//   },
+
+{
+  /* <TreasureContainer weightedRandomBag={weightedRandomBag} />
+<Art weightedRandomBag={weightedRandomBag} />
+<Jewelry weightedRandomBag={weightedRandomBag} />
+<Goods weightedRandomBag={weightedRandomBag} />
+<Coins weightedRandomBag={weightedRandomBag} visible={treasure} /> */
+}
