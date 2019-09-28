@@ -38,6 +38,10 @@ const Treasure = () => {
       <h1>Treasure</h1>
       <button onClick={() => handleClick()}>Treasure Type</button>
       <h2>{treasure.type}</h2>
+      <TreasureContainer
+        treasure={treasure}
+        weightedRandomBag={weightedRandomBag}
+      />
       <TreasureItem treasure={treasure} weightedRandomBag={weightedRandomBag} />
     </div>
   );
@@ -78,7 +82,7 @@ const treasureTypes = [
 //   },
 
 {
-  /* <TreasureContainer weightedRandomBag={weightedRandomBag} />
+  /* 
 <Art weightedRandomBag={weightedRandomBag} />
 <Jewelry weightedRandomBag={weightedRandomBag} />
 <Goods weightedRandomBag={weightedRandomBag} />

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 
+import Button from "../../Common/Button/Button";
+
 const TreasureContainer = props => {
-  const { weightedRandomBag } = props;
+  const { treasure, weightedRandomBag } = props;
+  let item;
 
   const [treasureContained, setTreasureContained] = useState("");
 
@@ -13,14 +16,19 @@ const TreasureContainer = props => {
     };
     setTreasureContained(treasureContents);
   };
-  return (
-    <div>
-      <button onClick={() => handleClick()}>Generate Container</button>
-      <h2>{treasureContained.container}</h2>
-      <p>Treasure is hidden by: {treasureContained.hidden}</p>
-      <p>Treasure is trapped by: {treasureContained.trapped}</p>
-    </div>
-  );
+
+  if (treasure.type) {
+    item = (
+      <div>
+        <Button handleClick={handleClick} label="Generate Container" />
+        <h2>{treasureContained.container}</h2>
+        <p>Treasure is hidden by: {treasureContained.hidden}</p>
+        <p>Treasure is trapped by: {treasureContained.trapped}</p>
+      </div>
+    );
+  }
+
+  return <div>{item}</div>;
 };
 
 export default TreasureContainer;
