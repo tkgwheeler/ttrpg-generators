@@ -24,9 +24,10 @@ const Goods = props => {
   return (
     <Card
       title="Goods"
-      action={<Button handleClick={handleClick} label="Regenerate" />}
+      action={
+        <Button handleClick={handleClick} label="Regenerate" type="link" />
+      }
     >
-      <h2>Goods</h2>
       <Label text="Low value goods" />
       <p>{goodsContained.lowValue}</p>
       <Label text="High value goods" />

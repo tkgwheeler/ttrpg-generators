@@ -27,7 +27,9 @@ const TreasureContainer = props => {
     item = (
       <Card
         title="Treasure Container"
-        action={<Button handleClick={handleClick} label="Regenerate" />}
+        action={
+          <Button handleClick={handleClick} label="Regenerate" type="link" />
+        }
       >
         <Label text="Type" />
         <h2>{treasureContained.container}</h2>

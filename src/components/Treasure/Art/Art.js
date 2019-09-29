@@ -30,7 +30,9 @@ const Art = props => {
   return (
     <Card
       title="Art"
-      action={<Button handleClick={handleClick} label="Generate Art" />}
+      action={
+        <Button handleClick={handleClick} label="Regenerate" type="link" />
+      }
     >
       <Label text="Subject" />
       <h2>{artContained.subject}</h2>

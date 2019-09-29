@@ -23,7 +23,13 @@ const Jewelry = props => {
   return (
     <Card
       title="Jewelry"
-      action={<Button handleClick={handleClick} label="Generate Jewelry" />}
+      action={
+        <Button
+          handleClick={handleClick}
+          label="Generate Jewelry"
+          type="link"
+        />
+      }
     >
       <Label text="Type" />
       <h3>{jewelryContained.item}</h3>

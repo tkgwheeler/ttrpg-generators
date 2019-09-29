@@ -23,7 +23,9 @@ const Coins = props => {
   return (
     <Card
       title="Coins"
-      action={<Button handleClick={handleClick} label="Regenerate" />}
+      action={
+        <Button handleClick={handleClick} label="Regenerate" type="link" />
+      }
     >
       <h2>Coins</h2>
       <Label text="Coin type" />
