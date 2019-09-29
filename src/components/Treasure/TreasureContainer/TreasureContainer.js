@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "../../Common/Button/Button";
+import Card from "../../Common/Card/Card";
+import ContainerStyles from "./treasureContainer.module.less";
+import Label from "../../Common/Label/Label";
 
 const TreasureContainer = props => {
   const { treasure, weightedRandomBag } = props;
@@ -17,14 +20,22 @@ const TreasureContainer = props => {
     setTreasureContained(treasureContents);
   };
 
+  useEffect(() => {
+    handleClick();
+  }, []);
+
   if (treasure.type) {
     item = (
-      <div>
-        <Button handleClick={handleClick} label="Generate Container" />
+      <Card
+        title="Treasure Container"
+        action={<Button handleClick={handleClick} label="Regenerate" />}
+      >
         <h2>{treasureContained.container}</h2>
-        <p>Treasure is hidden by: {treasureContained.hidden}</p>
-        <p>Treasure is trapped by: {treasureContained.trapped}</p>
-      </div>
+        <Label text="Hidden by" />
+        <p>{treasureContained.hidden}</p>
+        <Label text="Trapped by" />
+        <p>{treasureContained.trapped}</p>
+      </Card>
     );
   }
 

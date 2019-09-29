@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Art from "./Art/Art";
+import Button from "../Common/Button/Button";
 import Coins from "./Coins/Coins";
 import Goods from "./Goods/Goods";
 import Jewelry from "./Jewelry/Jewelry";
@@ -37,7 +38,6 @@ const Treasure = () => {
     <div>
       <h1>Treasure</h1>
       <button onClick={() => handleClick()}>Treasure Type</button>
-      <h2>{treasure.type}</h2>
       <TreasureContainer
         treasure={treasure}
         weightedRandomBag={weightedRandomBag}

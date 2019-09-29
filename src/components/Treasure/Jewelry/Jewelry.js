@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import Button from "../../Common/Button/Button";
+import Label from "../../Common/Label/Label";
+
 const Jewelry = props => {
   const { weightedRandomBag } = props;
 
@@ -14,8 +17,10 @@ const Jewelry = props => {
 
   return (
     <div>
-      <button onClick={() => handleClick()}>Generate Jewelry</button>
-      <h2>{jewelryContained.item}</h2>
+      <h3>Jewelry</h3>
+      <Label text="Jewelry item" />
+      <p>{jewelryContained.item}</p>
+      <Button handleClick={handleClick} label="Generate Jewelry" />
     </div>
   );
 };

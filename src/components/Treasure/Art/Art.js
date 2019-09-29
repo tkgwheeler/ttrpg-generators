@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import Button from "../../Common/Button/Button";
+import Label from "../../Common/Label/Label";
+
 const Art = props => {
   const { weightedRandomBag } = props;
 
@@ -20,15 +23,22 @@ const Art = props => {
   };
   return (
     <div>
-      <button onClick={() => handleClick()}>Generate Art</button>
       <h2>{artContained.material}</h2>
-      <p>Subject is: {artContained.subject}</p>
-      <p>Renown of artist: {artContained.renown}</p>
-      <p>Material quality: {artContained.materialQuality}</p>
-      <p>Age : {artContained.age}</p>
-      <p>Size: {artContained.size}</p>
-      <p>Quality of art: {artContained.quality}</p>
-      <p>Condition: {artContained.condition}</p>
+      <Label text="Subject" />
+      <p>{artContained.subject}</p>
+      <Label text="Renown" />
+      <p>{artContained.renown}</p>
+      <Label text="Material quality" />
+      <p>{artContained.materialQuality}</p>
+      <Label text="Age" />
+      <p>{artContained.age}</p>
+      <Label text="Size" />
+      <p>{artContained.size}</p>
+      <Label text="Quality of art" />
+      <p>{artContained.quality}</p>
+      <Label text="Condition" />
+      <p>{artContained.condition}</p>
+      <Button handleClick={handleClick} label="Generate Art" />
     </div>
   );
 };

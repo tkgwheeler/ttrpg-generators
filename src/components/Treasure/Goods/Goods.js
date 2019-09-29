@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import Button from "../../Common/Button/Button";
+import Label from "../../Common/Label/Label";
+
 const Goods = props => {
   const { weightedRandomBag } = props;
 
@@ -15,10 +18,12 @@ const Goods = props => {
 
   return (
     <div>
-      <button onClick={() => handleClick()}>Generate Goods</button>
       <h2>Goods</h2>
+      <Label text="Low value goods" />
       <p>{goodsContained.lowValue}</p>
+      <Label text="High value goods" />
       <p>{goodsContained.highValue}</p>
+      <Button handleClick={handleClick} label="Generate Goods" />
     </div>
   );
 };
