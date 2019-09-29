@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Button from "../Common/Button/Button";
+import Label from "../Common/Label/Label";
 import TreasureContainer from "./TreasureContainer/TreasureContainer";
 import TreasureList from "./TreasureList/TreasureList";
 
@@ -49,7 +50,17 @@ const Treasure = () => {
     <div>
       <div style={{ marginBottom: "40px" }}>
         <h1>Treasure</h1>
-        <input value={newAmount} onChange={handleAmountChange} />
+        <Label text="Number of Items" />
+        <div style={{ marginBottom: "24px" }}>
+          <input
+            value={newAmount}
+            onChange={handleAmountChange}
+            type="number"
+            min="0"
+            max="50"
+            step="1"
+          />
+        </div>
         <Button handleClick={handleClick} label="Get Treasure" type="primary" />
       </div>
       <TreasureContainer
