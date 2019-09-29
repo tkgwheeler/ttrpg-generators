@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "../../Common/Button/Button";
+import Card from "../../Common/Card/Card";
 import Label from "../../Common/Label/Label";
 
 const Art = props => {
@@ -21,11 +22,20 @@ const Art = props => {
     };
     setArtContained(artContents);
   };
+
+  useEffect(() => {
+    handleClick();
+  }, []);
+
   return (
-    <div>
-      <h2>{artContained.material}</h2>
+    <Card
+      title="Art"
+      action={<Button handleClick={handleClick} label="Generate Art" />}
+    >
       <Label text="Subject" />
-      <p>{artContained.subject}</p>
+      <h2>{artContained.subject}</h2>
+      <Label text="Material" />
+      <p>{artContained.material}</p>
       <Label text="Renown" />
       <p>{artContained.renown}</p>
       <Label text="Material quality" />
@@ -38,8 +48,7 @@ const Art = props => {
       <p>{artContained.quality}</p>
       <Label text="Condition" />
       <p>{artContained.condition}</p>
-      <Button handleClick={handleClick} label="Generate Art" />
-    </div>
+    </Card>
   );
 };
 

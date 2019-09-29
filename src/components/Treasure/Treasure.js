@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 
-import Art from "./Art/Art";
-import Button from "../Common/Button/Button";
-import Coins from "./Coins/Coins";
-import Goods from "./Goods/Goods";
-import Jewelry from "./Jewelry/Jewelry";
 import TreasureContainer from "./TreasureContainer/TreasureContainer";
 import TreasureItem from "./TreasureItem/TreasureItem";
 

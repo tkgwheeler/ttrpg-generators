@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import Button from "../../Common/Button/Button";
 import Card from "../../Common/Card/Card";
-import ContainerStyles from "./treasureContainer.module.less";
 import Label from "../../Common/Label/Label";
 
 const TreasureContainer = props => {
@@ -30,6 +29,7 @@ const TreasureContainer = props => {
         title="Treasure Container"
         action={<Button handleClick={handleClick} label="Regenerate" />}
       >
+        <Label text="Type" />
         <h2>{treasureContained.container}</h2>
         <Label text="Hidden by" />
         <p>{treasureContained.hidden}</p>

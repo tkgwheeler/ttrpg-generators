@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "../../Common/Button/Button";
+import Card from "../../Common/Card/Card";
 import Label from "../../Common/Label/Label";
 
 const Jewelry = props => {
@@ -15,13 +16,18 @@ const Jewelry = props => {
     setJewelryContained(jewelryContents);
   };
 
+  useEffect(() => {
+    handleClick();
+  }, []);
+
   return (
-    <div>
-      <h3>Jewelry</h3>
-      <Label text="Jewelry item" />
-      <p>{jewelryContained.item}</p>
-      <Button handleClick={handleClick} label="Generate Jewelry" />
-    </div>
+    <Card
+      title="Jewelry"
+      action={<Button handleClick={handleClick} label="Generate Jewelry" />}
+    >
+      <Label text="Type" />
+      <h3>{jewelryContained.item}</h3>
+    </Card>
   );
 };
 

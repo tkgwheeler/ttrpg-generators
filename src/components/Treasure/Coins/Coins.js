@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "../../Common/Button/Button";
 import Card from "../../Common/Card/Card";
@@ -15,6 +15,10 @@ const Coins = props => {
     };
     setCoinsContained(coinsContents);
   };
+
+  useEffect(() => {
+    handleClick();
+  }, []);
 
   return (
     <Card
