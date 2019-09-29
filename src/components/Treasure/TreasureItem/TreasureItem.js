@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-
 import Art from "../Art/Art";
 import Coins from "../Coins/Coins";
 import Goods from "../Goods/Goods";
 import Jewelry from "../Jewelry/Jewelry";
+import React from "react";
 
 const TreasureItem = props => {
   const { treasure, weightedRandomBag } = props;
@@ -22,9 +21,11 @@ const TreasureItem = props => {
     case "Jeweled Items":
       item = <Jewelry weightedRandomBag={weightedRandomBag} />;
       break;
+    default:
+      item = <></>;
   }
 
-  return <div>{item}</div>;
+  return <div style={{ marginBottom: "32px" }}>{item}</div>;
 };
 
 export default TreasureItem;

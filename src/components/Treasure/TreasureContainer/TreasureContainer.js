@@ -21,9 +21,10 @@ const TreasureContainer = props => {
 
   useEffect(() => {
     handleClick();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (treasure.type) {
+  if (treasure.length > 0) {
     item = (
       <Card
         title="Treasure Container"
@@ -41,7 +42,7 @@ const TreasureContainer = props => {
     );
   }
 
-  return <div>{item}</div>;
+  return <div style={{ marginBottom: "32px" }}>{item}</div>;
 };
 
 export default TreasureContainer;

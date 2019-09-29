@@ -2,10 +2,12 @@ import React, { useState } from "react";
 
 import Button from "../Common/Button/Button";
 import TreasureContainer from "./TreasureContainer/TreasureContainer";
-import TreasureItem from "./TreasureItem/TreasureItem";
+import TreasureList from "./TreasureList/TreasureList";
 
 const Treasure = () => {
-  const [treasure, setTreasure] = useState("");
+  const [treasure, setTreasure] = useState([]);
+
+  const numberOfItems = 5;
 
   const weightedRandomBag = items => {
     let entries = [];
@@ -24,21 +26,34 @@ const Treasure = () => {
   };
 
   const handleClick = () => {
-    let treasureType = {
-      type: weightedRandomBag(treasureTypes),
-    };
-    setTreasure(treasureType);
+    setTreasure(createTreasureList());
+  };
+
+  const createTreasureList = () => {
+    let treasureList = [];
+    for (let i = 0; i < numberOfItems; i++) {
+      let treasureType = {
+        type: weightedRandomBag(treasureTypes),
+      };
+      treasureList.push(treasureType);
+    }
+    return treasureList;
   };
 
   return (
     <div>
-      <h1>Treasure</h1>
-      <Button handleClick={handleClick} label="Get Treasure" type="primary" />
+      <div style={{ marginBottom: "40px" }}>
+        <h1>Treasure</h1>
+        <Button handleClick={handleClick} label="Get Treasure" type="primary" />
+      </div>
       <TreasureContainer
         treasure={treasure}
         weightedRandomBag={weightedRandomBag}
       />
-      <TreasureItem treasure={treasure} weightedRandomBag={weightedRandomBag} />
+      <TreasureList
+        weightedRandomBag={weightedRandomBag}
+        treasureList={treasure}
+      />
     </div>
   );
 };
@@ -76,11 +91,3 @@ const treasureTypes = [
 //     name: "Special and Magic Items",
 //     weight: 1,
 //   },
-
-{
-  /* 
-<Art weightedRandomBag={weightedRandomBag} />
-<Jewelry weightedRandomBag={weightedRandomBag} />
-<Goods weightedRandomBag={weightedRandomBag} />
-<Coins weightedRandomBag={weightedRandomBag} visible={treasure} /> */
-}

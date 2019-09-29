@@ -18,6 +18,7 @@ const Jewelry = props => {
 
   useEffect(() => {
     handleClick();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
