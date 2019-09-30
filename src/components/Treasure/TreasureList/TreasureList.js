@@ -1,4 +1,5 @@
 import React from "react";
+import TreasureContainer from "../TreasureContainer/TreasureContainer";
 import TreasureItem from "../TreasureItem/TreasureItem";
 
 const TreasureList = props => {
@@ -14,7 +15,15 @@ const TreasureList = props => {
     );
   });
 
-  return <div style={{ width: "80%", margin: "0 auto" }}>{listItems}</div>;
+  return (
+    <div>
+      <TreasureContainer
+        treasure={treasureList}
+        weightedRandomBag={weightedRandomBag}
+      />
+      <div style={{ width: "80%", margin: "0 auto" }}>{listItems}</div>
+    </div>
+  );
 };
 
 export default TreasureList;

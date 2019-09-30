@@ -1,14 +1,36 @@
 import React, { useState } from "react";
+import { graphql, useStaticQuery } from "gatsby";
 
-import Button from "../Common/Button/Button";
-import Label from "../Common/Label/Label";
-import TreasureContainer from "./TreasureContainer/TreasureContainer";
+import TreasureHeader from "./TreasureHeader/TresureHeader";
 import TreasureList from "./TreasureList/TreasureList";
+
+// To Do
 
 const Treasure = () => {
   const [treasure, setTreasure] = useState([]);
   const [amount, setAmount] = useState(3);
   const [newAmount, setNewAmount] = useState(3);
+
+  const queryData = useStaticQuery(graphql`
+    {
+      allTreasureJson {
+        edges {
+          node {
+            name
+            weight
+          }
+        }
+      }
+    }
+  `);
+
+  const treasureTypes = (() => {
+    const fixedData = [];
+    queryData.allTreasureJson.edges.forEach(item =>
+      fixedData.push({ name: item.node.name, weight: item.node.weight })
+    );
+    return fixedData;
+  })();
 
   const weightedRandomBag = items => {
     let entries = [];
@@ -48,24 +70,10 @@ const Treasure = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: "40px" }}>
-        <h1>Treasure</h1>
-        <Label text="Number of Items" />
-        <div style={{ marginBottom: "24px" }}>
-          <input
-            value={newAmount}
-            onChange={handleAmountChange}
-            type="number"
-            min="0"
-            max="50"
-            step="1"
-          />
-        </div>
-        <Button handleClick={handleClick} label="Get Treasure" type="primary" />
-      </div>
-      <TreasureContainer
-        treasure={treasure}
-        weightedRandomBag={weightedRandomBag}
+      <TreasureHeader
+        handleClick={handleClick}
+        inputValue={newAmount}
+        inputChange={handleAmountChange}
       />
       <TreasureList
         weightedRandomBag={weightedRandomBag}
@@ -76,35 +84,3 @@ const Treasure = () => {
 };
 
 export default Treasure;
-
-const treasureTypes = [
-  {
-    name: "Art",
-    weight: 1,
-  },
-  {
-    name: "Jeweled Items",
-    weight: 2,
-  },
-  {
-    name: "Goods",
-    weight: 4,
-  },
-  {
-    name: "Coins",
-    weight: 6,
-  },
-];
-
-// {
-//     name: "Furnishings and clothing",
-//     weight: 4,
-//   },
-//   {
-//     name: "Gems",
-//     weight: 2,
-//   },
-//   {
-//     name: "Special and Magic Items",
-//     weight: 1,
-//   },
