@@ -36,7 +36,7 @@ const Art = props => {
       }
     >
       <Label text="Subject" />
-      <h2>{artContained.subject}</h2>
+      <h3>{artContained.subject}</h3>
       <Label text="Material" />
       <p>{artContained.material}</p>
       <Label text="Renown" />

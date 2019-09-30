@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { graphql, useStaticQuery } from "gatsby";
 
 import Button from "../../Common/Button/Button";
 import Card from "../../Common/Card/Card";
@@ -8,6 +9,20 @@ const Jewelry = props => {
   const { weightedRandomBag } = props;
 
   const [jewelryContained, setJewelryContained] = useState("");
+
+  const queryData = useStaticQuery(graphql`
+    {
+      __typename
+      allTreasureJewelryJson {
+        nodes {
+          weight
+          name
+        }
+      }
+    }
+  `);
+
+  const jewelryItem = queryData.allTreasureJewelryJson.nodes;
 
   const handleClick = () => {
     let jewelryContents = {
@@ -35,38 +50,3 @@ const Jewelry = props => {
 };
 
 export default Jewelry;
-
-const jewelryItem = [
-  {
-    name: "Anklet",
-    weight: 2,
-  },
-  {
-    name: "Armband",
-    weight: 3,
-  },
-  {
-    name: "Belt",
-    weight: 2,
-  },
-  {
-    name: "Small Box",
-    weight: 2,
-  },
-  {
-    name: "Braclet",
-    weight: 5,
-  },
-  {
-    name: "Broach",
-    weight: 3,
-  },
-  {
-    name: "Buckle",
-    weight: 1,
-  },
-  {
-    name: "Chain",
-    weight: 1,
-  },
-];

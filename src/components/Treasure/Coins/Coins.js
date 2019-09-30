@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { graphql, useStaticQuery } from "gatsby";
 
 import Button from "../../Common/Button/Button";
 import Card from "../../Common/Card/Card";
@@ -8,6 +9,19 @@ const Coins = props => {
   const { weightedRandomBag } = props;
 
   const [coinsContained, setCoinsContained] = useState("");
+
+  const queryData = useStaticQuery(graphql`
+    {
+      allTreasureCoinsJson {
+        nodes {
+          name
+          weight
+        }
+      }
+    }
+  `);
+
+  const coinType = queryData.allTreasureCoinsJson.nodes;
 
   const handleClick = () => {
     let coinsContents = {
@@ -28,34 +42,10 @@ const Coins = props => {
         <Button handleClick={handleClick} label="Regenerate" type="link" />
       }
     >
-      <h2>Coins</h2>
       <Label text="Coin type" />
-      <p>{coinsContained.type}</p>
+      <h3>{coinsContained.type}</h3>
     </Card>
   );
 };
 
 export default Coins;
-
-const coinType = [
-  {
-    name: "Copper",
-    weight: 2,
-  },
-  {
-    name: "Silver",
-    weight: 3,
-  },
-  {
-    name: "Electrum",
-    weight: 2,
-  },
-  {
-    name: "Gold",
-    weight: 3,
-  },
-  {
-    name: "Platinum",
-    weight: 1,
-  },
-];

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Anklet",
+    "weight": 2
+  },
+  {
+    "name": "Armband",
+    "weight": 3
+  },
+  {
+    "name": "Belt",
+    "weight": 2
+  },
+  {
+    "name": "Small Box",
+    "weight": 2
+  },
+  {
+    "name": "Braclet",
+    "weight": 5
+  },
+  {
+    "name": "Broach",
+    "weight": 3
+  },
+  {
+    "name": "Buckle",
+    "weight": 1
+  },
+  {
+    "name": "Chain",
+    "weight": 1
+  }
+]

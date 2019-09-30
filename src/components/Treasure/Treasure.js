@@ -5,6 +5,9 @@ import TreasureHeader from "./TreasureHeader/TresureHeader";
 import TreasureList from "./TreasureList/TreasureList";
 
 // To Do
+// Convert Art to JSON and query
+// Rename treasure.json to treasureType.json
+// Look at Generating coin amounts - Idea to random gen number upto a max then remove from Max upto Coin items number of times
 
 const Treasure = () => {
   const [treasure, setTreasure] = useState([]);
@@ -14,8 +17,8 @@ const Treasure = () => {
   const queryData = useStaticQuery(graphql`
     {
       allTreasureJson {
-        edges {
-          node {
+        nodes {
+          types {
             name
             weight
           }
@@ -24,13 +27,7 @@ const Treasure = () => {
     }
   `);
 
-  const treasureTypes = (() => {
-    const fixedData = [];
-    queryData.allTreasureJson.edges.forEach(item =>
-      fixedData.push({ name: item.node.name, weight: item.node.weight })
-    );
-    return fixedData;
-  })();
+  const treasureTypes = queryData.allTreasureJson.nodes[0].types;
 
   const weightedRandomBag = items => {
     let entries = [];

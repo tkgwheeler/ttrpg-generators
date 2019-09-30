@@ -1,18 +1,22 @@
 [
   {
-    "name": "Art",
-    "weight": 1
-  },
-  {
-    "name": "Jeweled Items",
-    "weight": 2
-  },
-  {
-    "name": "Goods",
-    "weight": 4
-  },
-  {
-    "name": "Coins",
-    "weight": 6
+    "types": [
+      {
+        "name": "Art",
+        "weight": 1
+      },
+      {
+        "name": "Jeweled Items",
+        "weight": 2
+      },
+      {
+        "name": "Goods",
+        "weight": 4
+      },
+      {
+        "name": "Coins",
+        "weight": 6
+      }
+    ]
   }
 ]

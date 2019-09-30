@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Copper",
+    "weight": 2
+  },
+  {
+    "name": "Silver",
+    "weight": 3
+  },
+  {
+    "name": "Electrum",
+    "weight": 2
+  },
+  {
+    "name": "Gold",
+    "weight": 3
+  },
+  {
+    "name": "Platinum",
+    "weight": 1
+  }
+]
