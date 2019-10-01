@@ -5,14 +5,13 @@ import TreasureHeader from "./TreasureHeader/TresureHeader";
 import TreasureList from "./TreasureList/TreasureList";
 
 // To Do
-// Convert Art to JSON and query
 // Rename treasure.json to treasureType.json
 // Look at Generating coin amounts - Idea to random gen number upto a max then remove from Max upto Coin items number of times
 
 const Treasure = () => {
   const [treasure, setTreasure] = useState([]);
-  const [amount, setAmount] = useState(3);
-  const [newAmount, setNewAmount] = useState(3);
+  const [numberOfItems, setNumberOfItems] = useState(3);
+  const [value, setValue] = useState(10);
 
   const queryData = useStaticQuery(graphql`
     {
@@ -46,20 +45,40 @@ const Treasure = () => {
   };
 
   const handleClick = () => {
-    setAmount(newAmount);
     setTreasure(createTreasureList());
   };
 
   const handleAmountChange = event => {
-    setNewAmount(event.target.value);
+    setNumberOfItems(event.target.value);
   };
 
+  // Create a list of item types and values
   const createTreasureList = () => {
     let treasureList = [];
-    for (let i = 0; i < newAmount; i++) {
-      let treasureType = {
-        type: weightedRandomBag(treasureTypes),
-      };
+    let remainder = value;
+
+    // Distribute the value across the number of items
+    const distributeValue = (value, item) => {
+      let maxV = value - (numberOfItems - (item + 1));
+      let itemValue = Math.ceil(Math.random() * maxV);
+      remainder -= itemValue;
+      return itemValue;
+    };
+
+    // Iterate to create each item, the last item recieves the full remaining value
+    for (let i = 0; i < numberOfItems; i++) {
+      let treasureType;
+      if (i === numberOfItems - 1) {
+        treasureType = {
+          type: weightedRandomBag(treasureTypes),
+          value: remainder,
+        };
+      } else {
+        treasureType = {
+          type: weightedRandomBag(treasureTypes),
+          value: distributeValue(remainder, i),
+        };
+      }
       treasureList.push(treasureType);
     }
     return treasureList;
@@ -69,7 +88,7 @@ const Treasure = () => {
     <div>
       <TreasureHeader
         handleClick={handleClick}
-        inputValue={newAmount}
+        inputValue={numberOfItems}
         inputChange={handleAmountChange}
       />
       <TreasureList
