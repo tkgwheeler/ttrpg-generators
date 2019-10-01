@@ -10,16 +10,24 @@ const TreasureItem = props => {
 
   switch (treasure.type) {
     case "Art":
-      item = <Art weightedRandomBag={weightedRandomBag} />;
+      item = (
+        <Art weightedRandomBag={weightedRandomBag} value={treasure.value} />
+      );
       break;
     case "Coins":
-      item = <Coins weightedRandomBag={weightedRandomBag} />;
+      item = (
+        <Coins weightedRandomBag={weightedRandomBag} value={treasure.value} />
+      );
       break;
     case "Goods":
-      item = <Goods weightedRandomBag={weightedRandomBag} />;
+      item = (
+        <Goods weightedRandomBag={weightedRandomBag} value={treasure.value} />
+      );
       break;
     case "Jeweled Items":
-      item = <Jewelry weightedRandomBag={weightedRandomBag} />;
+      item = (
+        <Jewelry weightedRandomBag={weightedRandomBag} value={treasure.value} />
+      );
       break;
     default:
       item = <></>;

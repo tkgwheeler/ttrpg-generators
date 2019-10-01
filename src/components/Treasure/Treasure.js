@@ -11,7 +11,7 @@ import TreasureList from "./TreasureList/TreasureList";
 const Treasure = () => {
   const [treasure, setTreasure] = useState([]);
   const [numberOfItems, setNumberOfItems] = useState(3);
-  const [value, setValue] = useState(10);
+  const [value, setValue] = useState(100);
 
   const queryData = useStaticQuery(graphql`
     {
@@ -94,6 +94,7 @@ const Treasure = () => {
       <TreasureList
         weightedRandomBag={weightedRandomBag}
         treasureList={treasure}
+        value={value}
       />
     </div>
   );

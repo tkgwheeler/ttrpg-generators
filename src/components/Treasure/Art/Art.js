@@ -3,10 +3,11 @@ import { graphql, useStaticQuery } from "gatsby";
 
 import Button from "../../Common/Button/Button";
 import Card from "../../Common/Card/Card";
+import ItemVal from "../../Common/ItemValue/ItemVal";
 import Label from "../../Common/Label/Label";
 
 const Art = props => {
-  const { weightedRandomBag } = props;
+  const { weightedRandomBag, value } = props;
 
   const [artContained, setArtContained] = useState("");
 
@@ -104,6 +105,7 @@ const Art = props => {
       <p>{artContained.quality}</p>
       <Label text="Condition" />
       <p>{artContained.condition}</p>
+      <ItemVal value={value} />
     </Card>
   );
 };

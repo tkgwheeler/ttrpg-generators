@@ -3,7 +3,7 @@ import TreasureContainer from "../TreasureContainer/TreasureContainer";
 import TreasureItem from "../TreasureItem/TreasureItem";
 
 const TreasureList = props => {
-  const { weightedRandomBag, treasureList } = props;
+  const { weightedRandomBag, treasureList, value } = props;
 
   const listItems = treasureList.map((item, index) => {
     return (
@@ -20,6 +20,7 @@ const TreasureList = props => {
       <TreasureContainer
         treasure={treasureList}
         weightedRandomBag={weightedRandomBag}
+        value={value}
       />
       <div style={{ width: "80%", margin: "0 auto" }}>{listItems}</div>
     </div>
