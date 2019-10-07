@@ -10,11 +10,9 @@ import TreasureList from "./TreasureList/TreasureList";
 
 const Treasure = () => {
   const [treasure, setTreasure] = useState([]);
-  const [numberOfItems, setNumberOfItems] = useState(3);
   const [value, setValue] = useState(500);
   const [goldRange, setGoldRange] = useState([100, 300]);
   const [challengeRating, setChallengeRating] = useState(1);
-  const [hoard, setHoard] = useState(0);
 
   const queryData = useStaticQuery(graphql`
     {
@@ -52,19 +50,16 @@ const Treasure = () => {
   };
 
   const handleClick = () => {
-    setTreasure(createTreasureList(treasureTypes));
+    let hoardSize = getHoardSize();
+    setTreasure(createTreasureList(treasureTypes, hoardSize));
   };
 
-  const handleAmountChange = event => {
-    setNumberOfItems(event.target.value);
-  };
-
-  const createTreasureList = weightedArr => {
+  const createTreasureList = (weightedArr, hoardSize) => {
     let treasureList = [];
     let minValue = goldRange[0];
     let maxValue = goldRange[1];
 
-    for (let i = 0; i < numberOfItems; i++) {
+    for (let i = 0; i < hoardSize; i++) {
       let treasureType = {
         type: weightedRandomBag(weightedArr),
         value: randomIntInRange(minValue, maxValue) * challengeRating,
@@ -82,7 +77,7 @@ const Treasure = () => {
     return result;
   };
 
-  const hoardFunc = () => {
+  const getHoardSize = () => {
     let arrName = weightedRandomBag(hoardSize);
     console.log(arrName);
     let arrIdx = hoardSize.findIndex(i => {
@@ -90,30 +85,18 @@ const Treasure = () => {
     });
     let { mod, dice, noDice, diceMod } = hoardSize[arrIdx];
     let result = hoardSizeRoll(mod, dice, noDice, diceMod);
+    console.log(result);
     return result;
   };
 
-  const handleHoard = () => {
-    setHoard(hoardFunc());
-  };
-
-  // console.log(weightedRandomBag(hoardSize));
-  // console.log(hoardSizeRoll(0, 3, 1, 0));
-
   return (
     <div>
-      <TreasureHeader
-        handleClick={handleClick}
-        inputValue={numberOfItems}
-        inputChange={handleAmountChange}
-      />
+      <TreasureHeader handleClick={handleClick} />
       <TreasureList
         weightedRandomBag={weightedRandomBag}
         treasureList={treasure}
         value={value}
       />
-      <button onClick={() => handleHoard()}>Treasure Hoard</button>
-      <h1>{hoard}</h1>
     </div>
   );
 };
