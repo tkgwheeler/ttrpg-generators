@@ -6,7 +6,7 @@ import Card from "../../Common/Card/Card";
 import Label from "../../Common/Label/Label";
 
 const TreasureContainer = props => {
-  const { treasure, weightedRandomBag, value } = props;
+  const { treasure, weightedRandomBag } = props;
 
   const [treasureContained, setTreasureContained] = useState("");
 
@@ -68,8 +68,6 @@ const TreasureContainer = props => {
         <p>{treasureContained.hidden}</p>
         <Label text="Trapped by" />
         <p>{treasureContained.trapped}</p>
-        <Label text="Value" />
-        <p>{value}</p>
       </Card>
     );
   }

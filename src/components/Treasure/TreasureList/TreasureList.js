@@ -7,24 +7,19 @@ const TreasureList = props => {
 
   const listItems = treasureList.map((item, index) => {
     return (
-      <TreasureItem
-        key={index}
-        treasure={item}
-        weightedRandomBag={weightedRandomBag}
-      />
+      <div key={index}>
+        <TreasureContainer
+          treasure={treasureList}
+          weightedRandomBag={weightedRandomBag}
+        />
+        <div style={{ width: "80%", margin: "0 auto" }}>
+          <TreasureItem treasure={item} weightedRandomBag={weightedRandomBag} />
+        </div>
+      </div>
     );
   });
 
-  return (
-    <div>
-      <TreasureContainer
-        treasure={treasureList}
-        weightedRandomBag={weightedRandomBag}
-        value={value}
-      />
-      <div style={{ width: "80%", margin: "0 auto" }}>{listItems}</div>
-    </div>
-  );
+  return <div>{listItems}</div>;
 };
 
 export default TreasureList;
