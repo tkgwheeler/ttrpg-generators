@@ -2,7 +2,6 @@ import React from "react";
 
 const IconCoins = props => {
   const fill = "#333";
-  console.log(props.color);
   let colorFill;
   switch (props.color) {
     default:

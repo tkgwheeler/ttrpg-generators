@@ -43,8 +43,8 @@ const TreasureContainer = props => {
   const handleClick = () => {
     let treasureContents = {
       container: weightedRandomBag(type),
-      hidden: weightedRandomBag(trappedBy),
-      trapped: weightedRandomBag(hiddenBy),
+      hidden: weightedRandomBag(hiddenBy),
+      trapped: weightedRandomBag(trappedBy),
     };
     setTreasureContained(treasureContents);
   };
