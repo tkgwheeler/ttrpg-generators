@@ -4,6 +4,7 @@ import { graphql, useStaticQuery } from "gatsby";
 import Button from "../../Common/Button/Button";
 import Card from "../../Common/Card/Card";
 import Label from "../../Common/Label/Label";
+import Treasure from "../Treasure";
 
 const TreasureContainer = props => {
   const { treasure, weightedRandomBag } = props;
@@ -52,7 +53,7 @@ const TreasureContainer = props => {
   useEffect(() => {
     handleClick();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [treasure]);
 
   if (treasure.length > 0) {
     item = (

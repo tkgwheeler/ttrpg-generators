@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
 
+import Dropdown from "../Common/Dropdown/Dropdown";
 import TreasureHeader from "./TreasureHeader/TresureHeader";
 import TreasureList from "./TreasureList/TreasureList";
 
@@ -49,7 +50,7 @@ const Treasure = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  const handleClick = () => {
+  const randomiseTreasure = () => {
     let hoardSize = getHoardSize();
     setTreasure(createTreasureList(treasureTypes, hoardSize));
   };
@@ -69,29 +70,41 @@ const Treasure = () => {
     return treasureList;
   };
 
-  const hoardSizeRoll = (mod, dice, noDice, diceMod) => {
-    let result = mod;
+  const rollHoardSize = (mod, dice, noDice, diceMod) => {
+    let rollResult = mod;
     for (let i = 0; i < noDice; i++) {
-      result += randomIntInRange(1, dice) + diceMod;
+      rollResult += randomIntInRange(1, dice) + diceMod;
     }
-    return result;
+    return rollResult;
   };
 
   const getHoardSize = () => {
-    let arrName = weightedRandomBag(hoardSize);
-    console.log(arrName);
-    let arrIdx = hoardSize.findIndex(i => {
-      return i.name === arrName;
+    let hoard = weightedRandomBag(hoardSizeList);
+    console.log(hoard);
+    let arrIdx = hoardSizeList.findIndex(i => {
+      return i.name === hoard;
     });
-    let { mod, dice, noDice, diceMod } = hoardSize[arrIdx];
-    let result = hoardSizeRoll(mod, dice, noDice, diceMod);
-    console.log(result);
-    return result;
+    let { mod, dice, noDice, diceMod } = hoardSizeList[arrIdx];
+    let hoardSize = rollHoardSize(mod, dice, noDice, diceMod);
+    console.log(hoardSize);
+    return hoardSize;
+  };
+
+  const toggleGoldRange = item => {
+    let itemGoldRange = tempList.find(element => element.id === item.id)
+      .goldRange;
+    setGoldRange(itemGoldRange);
   };
 
   return (
     <div>
-      <TreasureHeader handleClick={handleClick} />
+      <Dropdown
+        title="Dropdown"
+        list={tempList}
+        toggleItem={toggleGoldRange}
+        default={1}
+      />
+      <TreasureHeader handleClick={randomiseTreasure} />
       <TreasureList
         weightedRandomBag={weightedRandomBag}
         treasureList={treasure}
@@ -103,7 +116,7 @@ const Treasure = () => {
 
 export default Treasure;
 
-const hoardSize = [
+const hoardSizeList = [
   {
     name: "Individual Treasure",
     weight: 1,
@@ -167,5 +180,23 @@ const hoardSize = [
     dice: 4,
     noDice: 4,
     diceMod: 0,
+  },
+];
+
+const tempList = [
+  {
+    id: 1,
+    title: "Low",
+    goldRange: [100, 300],
+  },
+  {
+    id: 2,
+    title: "Medium",
+    goldRange: [400, 600],
+  },
+  {
+    id: 3,
+    title: "High",
+    goldRange: [800, 1200],
   },
 ];
