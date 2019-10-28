@@ -4,7 +4,6 @@ import Styles from "./dropdown.module.less";
 
 const Dropdown = props => {
   const [visible, setVisible] = useState(false);
-  const [headerTitle, setHeaderTitle] = useState(props.title);
   const [selectedItem, setSelectedItem] = useState(() =>
     props.list.find(e => e.id === props.default)
   );
@@ -14,15 +13,17 @@ const Dropdown = props => {
   };
 
   const selectItem = item => {
-    props.toggleItem(item);
+    if (props.toggleItem) props.toggleItem(item);
     setSelectedItem(item);
     toggleVisible();
   };
 
   return (
-    <div className={Styles.wrapper}>
+    <div
+      className={`${Styles.wrapper} ${visible ? Styles.wrapperVisible : ""}`}
+    >
       <div className={Styles.header} onClick={() => toggleVisible()}>
-        <div className="title">
+        <div className={Styles.title}>
           {selectedItem ? selectedItem.title : props.title}
         </div>
         <div className="arrow"></div>

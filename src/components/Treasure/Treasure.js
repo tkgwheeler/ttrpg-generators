@@ -30,19 +30,19 @@ const Treasure = () => {
 
   const treasureTypes = queryData.allTreasureJson.nodes[0].types;
 
-  const weightedRandomBag = items => {
-    let entries = [];
+  const weightedRandomBag = list => {
+    let items = [];
     let accumulatedWeight = 0;
-    let random;
+    let randomWeight;
     let foundItem;
 
-    items.forEach(x => {
+    list.forEach(x => {
       accumulatedWeight += x.weight;
-      entries.push({ name: x.name, weight: accumulatedWeight });
+      items.push({ name: x.name, weight: accumulatedWeight });
     });
 
-    random = Math.random() * accumulatedWeight;
-    foundItem = entries.find(entry => entry.weight >= random);
+    randomWeight = Math.random() * accumulatedWeight;
+    foundItem = items.find(entry => entry.weight >= randomWeight);
     return foundItem.name;
   };
 
@@ -91,7 +91,7 @@ const Treasure = () => {
   };
 
   const toggleGoldRange = item => {
-    let itemGoldRange = tempList.find(element => element.id === item.id)
+    let itemGoldRange = goldRangeList.find(element => element.id === item.id)
       .goldRange;
     setGoldRange(itemGoldRange);
   };
@@ -99,11 +99,12 @@ const Treasure = () => {
   return (
     <div>
       <Dropdown
-        title="Dropdown"
-        list={tempList}
+        title="Gold Range"
+        list={goldRangeList}
         toggleItem={toggleGoldRange}
         default={1}
       />
+      <Dropdown title="CR rating" list={challengeRatingList} default={1} />
       <TreasureHeader handleClick={randomiseTreasure} />
       <TreasureList
         weightedRandomBag={weightedRandomBag}
@@ -183,7 +184,7 @@ const hoardSizeList = [
   },
 ];
 
-const tempList = [
+const goldRangeList = [
   {
     id: 1,
     title: "Low",
@@ -198,5 +199,28 @@ const tempList = [
     id: 3,
     title: "High",
     goldRange: [800, 1200],
+  },
+];
+
+const challengeRatingList = [
+  {
+    id: 1,
+    title: "0-4",
+    multiplier: 1,
+  },
+  {
+    id: 2,
+    title: "5-10",
+    multiplier: 1,
+  },
+  {
+    id: 3,
+    title: "11-16",
+    multiplier: 1,
+  },
+  {
+    id: 4,
+    title: "17+",
+    multiplier: 1,
   },
 ];
