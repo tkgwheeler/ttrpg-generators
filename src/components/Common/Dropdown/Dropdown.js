@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import Styles from "./dropdown.module.less";
-import { node } from "prop-types";
 
 const Dropdown = props => {
   const clickBounds = useRef();
@@ -29,12 +28,14 @@ const Dropdown = props => {
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClick);
+    visible
+      ? document.addEventListener("mousedown", handleClick)
+      : document.removeEventListener("mousedown", handleClick);
 
     return () => {
       document.removeEventListener("mousedown", handleClick);
     };
-  }, []);
+  }, [visible]);
 
   return (
     <div
@@ -45,7 +46,9 @@ const Dropdown = props => {
         <div className={Styles.title}>
           {selectedItem ? selectedItem.title : props.title}
         </div>
-        <div className="arrow"></div>
+        <div className={Styles.arrow}>
+          <span className={`${visible ? Styles.arrowUp : Styles.arrowDown}`} />
+        </div>
       </div>
       {visible && (
         <ul className={`${Styles.list} ${visible ? Styles.listVisible : ""}`}>
