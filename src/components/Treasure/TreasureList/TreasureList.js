@@ -6,6 +6,7 @@ const TreasureList = props => {
   const { weightedRandomBag, treasureList, value } = props;
 
   const listItems = treasureList.map((item, index) => {
+    console.log("item is", item);
     return (
       <div key={index}>
         <TreasureContainer

@@ -96,6 +96,12 @@ const Treasure = () => {
     setGoldRange(itemGoldRange);
   };
 
+  const toggleCR = item => {
+    let itemCR = challengeRatingList.find(element => element.id === item.id)
+      .multiplier;
+    setChallengeRating(itemCR);
+  };
+
   return (
     <div>
       <Dropdown
@@ -104,7 +110,12 @@ const Treasure = () => {
         toggleItem={toggleGoldRange}
         default={1}
       />
-      <Dropdown title="CR rating" list={challengeRatingList} default={1} />
+      <Dropdown
+        title="CR rating"
+        list={challengeRatingList}
+        toggleItem={toggleCR}
+        default={1}
+      />
       <TreasureHeader handleClick={randomiseTreasure} />
       <TreasureList
         weightedRandomBag={weightedRandomBag}
@@ -211,16 +222,16 @@ const challengeRatingList = [
   {
     id: 2,
     title: "5-10",
-    multiplier: 1,
+    multiplier: 6,
   },
   {
     id: 3,
     title: "11-16",
-    multiplier: 1,
+    multiplier: 10,
   },
   {
     id: 4,
     title: "17+",
-    multiplier: 1,
+    multiplier: 14,
   },
 ];
