@@ -3,9 +3,10 @@
 .wrapper {
   border: 1px solid #e0e0e0;
   cursor: pointer;
-  display: inline-block;
+  display: block;
   position: relative;
-  min-width: 14em;
+  min-width: 8em;
+  max-width: 12em;
   border-radius: 4px;
   padding: 0px;
   &Visible {
@@ -32,13 +33,13 @@
     position: absolute;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 6px solid #aaa;
+    border-bottom: 6px solid rgba(0, 0, 0, 0.6);
   }
   &Down {
     position: absolute;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-top: 6px solid #aaa;
+    border-top: 6px solid rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -62,6 +63,7 @@
     border-color: #ccc;
     box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
     border-top-width: 0;
+    z-index: 10000;
   }
 }
 

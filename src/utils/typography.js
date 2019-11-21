@@ -14,6 +14,7 @@ const typography = new Typography({
     },
   ],
   headerFontFamily: [
+    "Grenze",
     "Avenir Next",
     "Helvetica Neue",
     "Segoe UI",
@@ -21,7 +22,7 @@ const typography = new Typography({
     "Arial",
     "sans-serif",
   ],
-  bodyFontFamily: ["Helvetica", "sans-serif"],
+  bodyFontFamily: ["Grenze", "Helvetica", "sans-serif"],
   // See below for the full list of options.
 });
 

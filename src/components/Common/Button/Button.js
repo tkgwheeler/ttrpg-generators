@@ -2,7 +2,7 @@ import React from "react";
 import buttonStyles from "./button.module.less";
 
 const Button = props => {
-  const { handleClick, label, type } = props;
+  const { handleClick, label, type, style } = props;
   let btnType;
 
   switch (type) {
@@ -19,6 +19,7 @@ const Button = props => {
 
   return (
     <button
+      style={style}
       className={`${buttonStyles.btn} ${btnType}`}
       onClick={() => handleClick()}
     >

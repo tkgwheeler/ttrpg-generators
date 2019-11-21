@@ -7,7 +7,7 @@
 
 import "./layout.css";
 
-import { graphql, useStaticQuery } from "gatsby";
+import { Link, graphql, useStaticQuery } from "gatsby";
 
 import Header from "./header";
 import PropTypes from "prop-types";
@@ -37,9 +37,9 @@ const Layout = ({ children }) => {
       >
         <main>{children}</main>
         <footer>
-          © {new Date().getFullYear()}, Built with
+          © {new Date().getFullYear()}, Built by BuckeyeBurl
           {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
+          <Link to="/world">Page 2</Link>
         </footer>
       </div>
     </>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
 
-import Button from "../../Common/Button/Button";
-import Card from "../../Common/Card/Card";
+import IconButton from "../../Common/Button/IconButton";
 import Label from "../../Common/Label/Label";
-import Treasure from "../Treasure";
+import Styles from "./treasureContainer.module.less";
+import { randomIntInRange } from "../../../utils/utils";
 
 const TreasureContainer = props => {
   const { treasure, weightedRandomBag } = props;
@@ -44,8 +44,9 @@ const TreasureContainer = props => {
   const handleClick = () => {
     let treasureContents = {
       container: weightedRandomBag(type),
-      hidden: weightedRandomBag(hiddenBy),
-      trapped: weightedRandomBag(trappedBy),
+      hidden: randomIntInRange(1, 6) === 1 ? weightedRandomBag(hiddenBy) : "",
+      trapped:
+        randomIntInRange(1, 10) === 1 ? weightedRandomBag(trappedBy) : "",
     };
     setTreasureContained(treasureContents);
   };
@@ -55,25 +56,34 @@ const TreasureContainer = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [treasure]);
 
-  if (treasure.length > 0) {
-    item = (
-      <Card
-        title="Treasure Container"
-        action={
-          <Button handleClick={handleClick} label="Regenerate" type="link" />
-        }
-      >
-        <Label text="Type" />
-        <h3>{treasureContained.container}</h3>
-        <Label text="Hidden by" />
-        <p>{treasureContained.hidden}</p>
-        <Label text="Trapped by" />
-        <p>{treasureContained.trapped}</p>
-      </Card>
-    );
-  }
+  item = (
+    <>
+      <div className={Styles.header}>
+        <div style={{ display: "flex" }}>
+          <div className={Styles.typeLabel}>Container:</div>
+          <div className={Styles.type}>{treasureContained.container}</div>
+        </div>
+        <div>
+          <IconButton handleClick={handleClick} />
+        </div>
+      </div>
+      <hr style={{ marginBottom: "4px" }} />
+      {treasureContained.hidden && (
+        <>
+          <Label text="Hidden by" />
+          <p>{treasureContained.hidden}</p>
+        </>
+      )}
+      {treasureContained.trapped && (
+        <>
+          <Label text="Trapped by" />
+          <p>{treasureContained.trapped}</p>
+        </>
+      )}
+    </>
+  );
 
-  return <div style={{ marginBottom: "32px" }}>{item}</div>;
+  return <div>{item}</div>;
 };
 
 export default TreasureContainer;

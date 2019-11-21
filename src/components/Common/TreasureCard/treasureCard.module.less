@@ -1,0 +1,29 @@
+@import "../../../utils/variables.less";
+
+.frame {
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 12px;
+  background-image: url("../../../images/card-bg.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.header {
+  margin-bottom: 8px;
+  &Type {
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 1em;
+  }
+  &Title {
+    font-size: 1.5em;
+  }
+  &TitleWrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.lineBreak {
+  background-color: @red-base;
+}

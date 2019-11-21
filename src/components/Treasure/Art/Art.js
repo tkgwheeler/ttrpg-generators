@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
 
 import Button from "../../Common/Button/Button";
-import Card from "../../Common/Card/Card";
-import ItemVal from "../../Common/ItemValue/ItemVal";
 import Label from "../../Common/Label/Label";
+import Styles from "./art.module.less";
+import TreasureCard from "../../Common/TreasureCard/TreasureCard";
 
 const Art = props => {
   const { weightedRandomBag, value } = props;
@@ -83,14 +83,17 @@ const Art = props => {
   }, []);
 
   return (
-    <Card
-      title="Art"
-      action={
-        <Button handleClick={handleClick} label="Regenerate" type="link" />
-      }
+    <TreasureCard
+      type="Art"
+      title={artContained.subject}
+      value={value}
+      action={<Button handleClick={handleClick} label="Art" type="link" />}
+      handleClick={handleClick}
     >
-      <Label text="Subject" />
-      <h3>{artContained.subject}</h3>
+      <div className={Styles.details}>
+        <span className={Styles.detailsLabel}>Details</span>
+        <hr style={{ marginBottom: "4px" }} />
+      </div>
       <Label text="Material" />
       <p>{artContained.material}</p>
       <Label text="Renown" />
@@ -105,8 +108,7 @@ const Art = props => {
       <p>{artContained.quality}</p>
       <Label text="Condition" />
       <p>{artContained.condition}</p>
-      <ItemVal value={value} />
-    </Card>
+    </TreasureCard>
   );
 };
 

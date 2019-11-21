@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
 
 import Button from "../../Common/Button/Button";
-import Card from "../../Common/Card/Card";
-import ItemVal from "../../Common/ItemValue/ItemVal";
-import Label from "../../Common/Label/Label";
+import TreasureCard from "../../Common/TreasureCard/TreasureCard";
+import TreasureContainer from "../TreasureContainer/TreasureContainer";
 
 const Coins = props => {
   const { weightedRandomBag, value } = props;
@@ -25,8 +24,29 @@ const Coins = props => {
   const coinType = queryData.allTreasureCoinsJson.nodes;
 
   const handleClick = () => {
+    let coin = weightedRandomBag(coinType);
+    let goldMultiplier;
+    switch (coin) {
+      default:
+        goldMultiplier = 1;
+        break;
+      case "Copper":
+        goldMultiplier = 100;
+        break;
+      case "Silver":
+        goldMultiplier = 10;
+        break;
+      case "Electrum":
+        goldMultiplier = 2;
+        break;
+      case "Platinum":
+        goldMultiplier = 0.1;
+        break;
+    }
+
     let coinsContents = {
-      type: weightedRandomBag(coinType),
+      type: coin,
+      coinCount: Math.floor(value * goldMultiplier),
     };
     setCoinsContained(coinsContents);
   };
@@ -37,16 +57,19 @@ const Coins = props => {
   }, []);
 
   return (
-    <Card
-      title="Coins"
-      action={
-        <Button handleClick={handleClick} label="Regenerate" type="link" />
+    <TreasureCard
+      type="Coins"
+      title={`${coinsContained.coinCount} ${coinsContained.type} coins`}
+      value={
+        coinsContained.type === "Platinum"
+          ? coinsContained.coinCount * 10
+          : value
       }
+      action={<Button handleClick={handleClick} label="Coins" type="link" />}
+      handleClick={handleClick}
     >
-      <Label text="Coin type" />
-      <h3>{coinsContained.type}</h3>
-      <ItemVal value={value} />
-    </Card>
+      <TreasureContainer weightedRandomBag={weightedRandomBag} />
+    </TreasureCard>
   );
 };
 

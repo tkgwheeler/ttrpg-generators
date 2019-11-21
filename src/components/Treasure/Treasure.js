@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
 
-import Dropdown from "../Common/Dropdown/Dropdown";
 import TreasureHeader from "./TreasureHeader/TresureHeader";
 import TreasureList from "./TreasureList/TreasureList";
 
@@ -80,13 +79,11 @@ const Treasure = () => {
 
   const getHoardSize = () => {
     let hoard = weightedRandomBag(hoardSizeList);
-    console.log(hoard);
     let arrIdx = hoardSizeList.findIndex(i => {
       return i.name === hoard;
     });
     let { mod, dice, noDice, diceMod } = hoardSizeList[arrIdx];
     let hoardSize = rollHoardSize(mod, dice, noDice, diceMod);
-    console.log(hoardSize);
     return hoardSize;
   };
 
@@ -104,19 +101,11 @@ const Treasure = () => {
 
   return (
     <div>
-      <Dropdown
-        title="Gold Range"
-        list={goldRangeList}
-        toggleItem={toggleGoldRange}
-        default={1}
+      <TreasureHeader
+        handleClick={randomiseTreasure}
+        toggleGoldRange={toggleGoldRange}
+        toggleCR={toggleCR}
       />
-      <Dropdown
-        title="CR rating"
-        list={challengeRatingList}
-        toggleItem={toggleCR}
-        default={1}
-      />
-      <TreasureHeader handleClick={randomiseTreasure} />
       <TreasureList
         weightedRandomBag={weightedRandomBag}
         treasureList={treasure}

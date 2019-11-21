@@ -5,6 +5,8 @@ import Button from "../../Common/Button/Button";
 import Card from "../../Common/Card/Card";
 import ItemVal from "../../Common/ItemValue/ItemVal";
 import Label from "../../Common/Label/Label";
+import TreasureCard from "../../Common/TreasureCard/TreasureCard";
+import TreasureContainer from "../TreasureContainer/TreasureContainer";
 
 const Jewelry = props => {
   const { weightedRandomBag, value } = props;
@@ -38,16 +40,15 @@ const Jewelry = props => {
   }, []);
 
   return (
-    <Card
-      title="Jewelry"
-      action={
-        <Button handleClick={handleClick} label="Regenerate" type="link" />
-      }
+    <TreasureCard
+      type="Jewelry"
+      title={jewelryContained.item}
+      value={value}
+      action={<Button handleClick={handleClick} label="Jewelry" type="link" />}
+      handleClick={handleClick}
     >
-      <Label text="Type" />
-      <h3>{jewelryContained.item}</h3>
-      <ItemVal value={value} />
-    </Card>
+      <TreasureContainer weightedRandomBag={weightedRandomBag} />
+    </TreasureCard>
   );
 };
 

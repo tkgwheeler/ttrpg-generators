@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
 
 import Button from "../../Common/Button/Button";
-import Card from "../../Common/Card/Card";
-import ItemVal from "../../Common/ItemValue/ItemVal";
-import Label from "../../Common/Label/Label";
+import TreasureCard from "../../Common/TreasureCard/TreasureCard";
+import TreasureContainer from "../TreasureContainer/TreasureContainer";
+import { randomIntInRange } from "../../../utils/utils";
 
 const Goods = props => {
   const { weightedRandomBag, value } = props;
@@ -35,10 +35,10 @@ const Goods = props => {
   } = queryData.allTreasureGoodsJson.nodes[0];
 
   const handleClick = () => {
-    let goodsContents = {
-      lowValue: weightedRandomBag(goodsLowValue),
-      highValue: weightedRandomBag(goodsHighValue),
-    };
+    let goodsContents =
+      randomIntInRange(1, 4) === 4
+        ? weightedRandomBag(goodsHighValue)
+        : weightedRandomBag(goodsLowValue);
     setGoodsContained(goodsContents);
   };
 
@@ -48,18 +48,15 @@ const Goods = props => {
   }, []);
 
   return (
-    <Card
-      title="Goods"
-      action={
-        <Button handleClick={handleClick} label="Regenerate" type="link" />
-      }
+    <TreasureCard
+      type="Goods"
+      title={goodsContained}
+      value={value}
+      action={<Button handleClick={handleClick} label="Goods" type="link" />}
+      handleClick={handleClick}
     >
-      <Label text="Low value goods" />
-      <p>{goodsContained.lowValue}</p>
-      <Label text="High value goods" />
-      <p>{goodsContained.highValue}</p>
-      <ItemVal value={value} />
-    </Card>
+      <TreasureContainer weightedRandomBag={weightedRandomBag} />
+    </TreasureCard>
   );
 };
 

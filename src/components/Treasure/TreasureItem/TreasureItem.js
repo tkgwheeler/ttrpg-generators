@@ -3,6 +3,7 @@ import Coins from "../Coins/Coins";
 import Goods from "../Goods/Goods";
 import Jewelry from "../Jewelry/Jewelry";
 import React from "react";
+import Styles from "./treasureItem.module.less";
 
 const TreasureItem = props => {
   const { treasure, weightedRandomBag } = props;
@@ -33,7 +34,7 @@ const TreasureItem = props => {
       item = <></>;
   }
 
-  return <div style={{ marginBottom: "32px" }}>{item}</div>;
+  return <div className={Styles.treasureItem}>{item}</div>;
 };
 
 export default TreasureItem;
