@@ -1,17 +1,20 @@
+import React, { useState } from "react";
 import { randomIntInRange, weightedRandomBag } from "../../utils/utils";
 
+import Geography from "./Geography/Geography";
 import Label from "../Common/Label/Label";
-import React from "react";
 
 const Region = props => {
+  const [elevation, setElevation] = useState([]);
+
   let area = randomIntInRange(1000, 10000);
   let population = area * 20;
   let arableArea = Math.floor(population / 180);
   let arablePercent = Math.floor((arableArea / area) * 100);
   let wildArea = Math.floor(area - arableArea);
   let wildPercent = Math.floor((wildArea / area) * 100);
-  let basePerceipitation = percipitationProfiles[2].name;
-  let baseTemperature = temperatureProfiles[2].name;
+  let basePerceipitation = percipitationProfiles[5];
+  let baseTemperature = temperatureProfiles[2];
   let localTemperature;
   let isMountains;
   let isCoastal;
@@ -19,6 +22,11 @@ const Region = props => {
   let localPercipitation;
   let elevationLow;
   let elevationHigh;
+  let biome;
+
+  const changeElevation = elevations => {
+    setElevation(elevations);
+  };
 
   const terrainFeatures = (elevationLow, elevationHigh) => {
     isCoastal = elevationLow.low === 0;
@@ -27,19 +35,20 @@ const Region = props => {
   };
 
   const setPercipitation = () => {
-    let windEffect = randomIntInRange(-1, 1);
-    let adjustments = 0;
+    const IndexOfBasePercipitation = percipitationProfiles.findIndex(
+      item => item === basePerceipitation
+    );
+
+    const windVariation = randomIntInRange(-1, 1);
+
+    let windAdjustments = 0;
     if (isMountains) {
-      adjustments += windEffect;
+      windAdjustments += windVariation;
     }
     if (isCoastal) {
-      adjustments += windEffect;
+      windAdjustments += windVariation;
     }
-
-    let baseIndex = percipitationProfiles.findIndex(
-      item => item.name === basePerceipitation
-    );
-    let adjustedIndex = baseIndex + adjustments;
+    let adjustedIndex = IndexOfBasePercipitation + windAdjustments;
 
     if (adjustedIndex < 0) {
       adjustedIndex = 0;
@@ -50,10 +59,13 @@ const Region = props => {
   };
 
   const setTemperature = () => {
-    let baseIndex = temperatureProfiles.findIndex(
-      item => item.name === baseTemperature
+    const indexOfBaseTemp = temperatureProfiles.findIndex(
+      item => item === baseTemperature
     );
-    let adjustedIndex = randomIntInRange(-1, 1) + baseIndex;
+
+    const tempVariation = randomIntInRange(-1, 1);
+
+    let adjustedIndex = tempVariation + indexOfBaseTemp;
 
     if (adjustedIndex < 0) {
       adjustedIndex = 0;
@@ -69,7 +81,7 @@ const Region = props => {
     return temperatureAdjustment;
   };
 
-  const setElevation = () => {
+  const determineElevation = () => {
     let elevationlist = [];
     let elevationOne =
       randomIntInRange(1, 4) === 1
@@ -87,43 +99,23 @@ const Region = props => {
   };
 
   const determineBiome = () => {
-    let biomeCheck = `${localTemperature.name} ${localPercipitation.name}`;
-    console.log(biomeCheck);
-    let result;
-    switch (biomeCheck) {
-      case "Very cold Super-arid":
-      case "Very cold Per-arid":
-      case "Very cold Arid":
-      case "Very cold Seim-arid":
-      case "Very cold Sub-humid":
-      case "Very cold Humid":
-      case "Very cold Per-humid":
-      case "Very cold Super-humid":
-        result = "Tundra";
-        break;
-      case "Cold Super-arid":
-        result = "Cold Desert";
-        break;
-      case "Cold Per-arid":
-        result = "Montane Grasslands";
-        break;
-      case "Cold Arid":
-      case "Cold Semi-arid":
-      case "Cold Sub-humid":
-      case "Cold Humid":
-      case "Cold Per-humid":
-      case "Cold Super-humid":
-        result = "Taiga";
-        break;
-    }
-    console.log(result);
+    const tempIdx = temperatureProfiles.findIndex(
+      item => item === localTemperature
+    );
+    const percipIdx = percipitationProfiles.findIndex(
+      item => item === localPercipitation
+    );
+    biome = biomeMap[tempIdx][percipIdx];
+    console.log(biomeProfiles.find(element => element.name === biome));
   };
 
-  setElevation();
+  determineElevation();
   terrainFeatures(elevationLow, elevationHigh);
   setTemperature();
   setPercipitation();
   determineBiome();
+
+  console.log(elevation);
 
   return (
     <div>
@@ -143,6 +135,7 @@ const Region = props => {
       <h2>Climate</h2>
       <p>Percipitation: {localPercipitation.name}</p>
       <p>Temperature: {localTemperature.name}</p>
+      <p>Biome: {biome}</p>
       <h2>Settlement</h2>
       <p>Population: {population}</p>
       <p>
@@ -151,6 +144,7 @@ const Region = props => {
       <p>
         Wild lands: {wildArea} sq.miles {wildPercent}%
       </p>
+      <Geography changeElevation={changeElevation} elevation={elevation} />
     </div>
   );
 };
@@ -159,34 +153,9 @@ export default Region;
 
 const percipitationProfiles = [
   {
-    name: "Super-humid",
+    name: "Super-arid",
     weight: 1,
-    level: 8,
-  },
-  {
-    name: "Per-humid",
-    weight: 2,
-    level: 7,
-  },
-  {
-    name: "Humid",
-    weight: 3,
-    level: 6,
-  },
-  {
-    name: "Sub-humid",
-    weight: 3,
-    level: 5,
-  },
-  {
-    name: "Seim-arid",
-    weight: 3,
-    level: 4,
-  },
-  {
-    name: "Arid",
-    weight: 3,
-    level: 3,
+    level: 1,
   },
   {
     name: "Per-arid",
@@ -194,9 +163,34 @@ const percipitationProfiles = [
     level: 2,
   },
   {
-    name: "Super-arid",
+    name: "Arid",
+    weight: 3,
+    level: 3,
+  },
+  {
+    name: "Seim-arid",
+    weight: 3,
+    level: 4,
+  },
+  {
+    name: "Sub-humid",
+    weight: 3,
+    level: 5,
+  },
+  {
+    name: "Humid",
+    weight: 3,
+    level: 6,
+  },
+  {
+    name: "Per-humid",
+    weight: 2,
+    level: 7,
+  },
+  {
+    name: "Super-humid",
     weight: 1,
-    level: 1,
+    level: 8,
   },
 ];
 
@@ -205,31 +199,37 @@ const temperatureProfiles = [
     name: "Very cold",
     avgTemp: -10,
     level: 1,
+    maxPercipitationLvl: 3,
   },
   {
     name: "Cold",
     avgTemp: 0,
     level: 2,
+    maxPercipitationLvl: 6,
   },
   {
     name: "Mild",
     avgTemp: 10,
     level: 3,
+    maxPercipitationLvl: 6,
   },
   {
     name: "Warm",
     avgTemp: 15,
     level: 4,
+    maxPercipitationLvl: 7,
   },
   {
     name: "Hot",
     avgTemp: 20,
     level: 5,
+    maxPercipitationLvl: 8,
   },
   {
     name: "Very hot",
     avgTemp: 30,
     level: 6,
+    maxPercipitationLvl: 8,
   },
 ];
 
@@ -269,5 +269,123 @@ const elevationLevels = [
     low: 1000,
     high: 1400,
     weight: 1,
+  },
+];
+
+const biomeMap = [
+  [
+    "Tundra",
+    "Tundra",
+    "Tundra",
+    "Tundra",
+    "Tundra",
+    "Tundra",
+    "Tundra",
+    "Tundra",
+  ],
+  [
+    "Cold Desert",
+    "Montane Grasslands",
+    "Montane Grasslands",
+    "Taiga",
+    "Taiga",
+    "Taiga",
+    "Taiga",
+    "Taiga",
+  ],
+  [
+    "Cold Desert",
+    "Temperate Grasslands",
+    "Temperate Grasslands",
+    "Temperate Deciduous Forest",
+    "Temperate Deciduous Forest",
+    "Temperate Rainforest",
+    "Temperate Rainforest",
+    "Temperate Rainforest",
+  ],
+  [
+    "Cold Desert",
+    "Chapparal",
+    "Chapparal",
+    "Temperate Deciduous Forest",
+    "Temperate Deciduous Forest",
+    "Temperate Rainforest",
+    "Temperate Rainforest",
+    "Temperate Rainforest",
+  ],
+  [
+    "Hot Desert",
+    "Tropical Shrublands",
+    "Tropical Savannas",
+    "Tropical Savannas",
+    "Tropical Seasonal Forest",
+    "Tropical Seasonal Forest",
+    "Tropical Rainforest",
+    "Tropical Rainforest",
+  ],
+  [
+    "Hot Desert",
+    "Hot Desert",
+    "Tropical Savannas",
+    "Tropical Savannas",
+    "Tropical Seasonal Forest",
+    "Tropical Seasonal Forest",
+    "Tropical Rainforest",
+    "Tropical Rainforest",
+  ],
+];
+
+const biomeProfiles = [
+  {
+    name: "Tundra",
+    habitability: 0.02,
+  },
+  {
+    name: "Cold Desert",
+    habitability: 0.05,
+  },
+  {
+    name: "Montane Grasslands",
+    habitability: 0.1,
+  },
+  {
+    name: "Taiga",
+    habitability: 0.15,
+  },
+  {
+    name: "Temperate Grasslands",
+    habitability: 0.5,
+  },
+  {
+    name: "Temperate Deciduous Forest",
+    habitability: 1,
+  },
+  {
+    name: "Temperate Rainforest",
+    habitability: 0.8,
+  },
+  {
+    name: "Chapparal",
+    habitability: 0.15,
+  },
+  {
+    name: "Hot Desert",
+    habitability: 0.02,
+  },
+  {
+    name: "Tropical Shrublands",
+    habitability: 0.1,
+  },
+  {
+    name: "Tropical Savannas",
+    habitability: 0.2,
+  },
+  {
+    name: "Tropical Seasonal Forest",
+    habitability: 0.5,
+  },
+  {
+    name: "Tropical Rainforest",
+    habitability: 0.9,
   },
 ];
