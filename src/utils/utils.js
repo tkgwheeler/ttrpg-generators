@@ -10,10 +10,10 @@ export const weightedRandomBag = list => {
 
   list.forEach(x => {
     accumulatedWeight += x.weight;
-    items.push({ name: x.name, weight: accumulatedWeight });
+    items.push({ ...x, weight: accumulatedWeight });
   });
 
   randomWeight = Math.random() * accumulatedWeight;
   foundItem = items.find(entry => entry.weight >= randomWeight);
-  return foundItem.name;
+  return foundItem;
 };
