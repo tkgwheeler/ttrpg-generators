@@ -1,40 +1,97 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { randomIntInRange, weightedRandomBag } from "../../utils/utils";
 
+import Card from "../Common/Card/Card";
+import Climate from "./Climate/Climate";
 import Geography from "./Geography/Geography";
-import Label from "../Common/Label/Label";
+import Population from "./Population/Population";
+import Summary from "./Summary/Summary";
+import TerrainFeatures from "./TerrainFeatures/TerrainFeatures";
 
-const Region = props => {
-  const [elevation, setElevation] = useState([]);
+const Region = () => {
+  const [regionData, setRegionData] = useState([]);
 
-  let area = randomIntInRange(1000, 10000);
-  let population = area * 20;
-  let arableArea = Math.floor(population / 180);
-  let arablePercent = Math.floor((arableArea / area) * 100);
-  let wildArea = Math.floor(area - arableArea);
-  let wildPercent = Math.floor((wildArea / area) * 100);
-  let basePerceipitation = percipitationProfiles[5];
-  let baseTemperature = temperatureProfiles[2];
-  let localTemperature;
-  let isMountains;
-  let isCoastal;
-  let isHilly;
-  let localPercipitation;
-  let elevationLow;
-  let elevationHigh;
-  let biome;
+  const basePerceipitation = percipitationProfiles[5];
+  const baseTemperature = temperatureProfiles[2];
 
-  const changeElevation = elevations => {
-    setElevation(elevations);
+  const createRegion = () => {
+    let region = [];
+    const elevation = determineElevation();
+    const terrain = terrainFeatures(elevation[0], elevation[1]);
+    const temperature = setTemperature(elevation[0].low);
+    const percipitation = setPercipitation(
+      terrain.isCoastal,
+      terrain.isMountains
+    );
+    const biome = setBiome(temperature, percipitation);
+    const population = setPopulation(biome);
+
+    let regionObject = {
+      elevation: {
+        low: elevation[0],
+        high: elevation[1],
+      },
+      features: terrain,
+      temperature: temperature,
+      percipitation: percipitation,
+      biome: biome,
+      population: population,
+    };
+
+    region.push(regionObject);
+
+    setRegionData(region);
+  };
+
+  const determineElevation = () => {
+    let elevationList = [];
+    let elevationOne =
+      randomIntInRange(1, 4) === 1
+        ? elevationLevels[0]
+        : weightedRandomBag(elevationLevels);
+    let elevationTwo = weightedRandomBag(elevationLevels);
+
+    elevationList.push(elevationOne, elevationTwo);
+    elevationList.sort((a, b) => {
+      return a.low - b.low;
+    });
+    return elevationList;
   };
 
   const terrainFeatures = (elevationLow, elevationHigh) => {
-    isCoastal = elevationLow.low === 0;
-    isHilly = elevationHigh.low - elevationLow.low >= 400;
-    isMountains = elevationHigh.low >= 800;
+    let isCoastal = elevationLow.low === 0;
+    let isHilly = elevationHigh.low - elevationLow.low >= 400;
+    let isMountains = elevationHigh.low >= 800;
+
+    let terrain = {
+      isCoastal: isCoastal,
+      isHilly: isHilly,
+      isMountains: isMountains,
+    };
+
+    return terrain;
   };
 
-  const setPercipitation = () => {
+  const setTemperature = elevationLow => {
+    const indexOfBaseTemp = temperatureProfiles.findIndex(
+      item => item === baseTemperature
+    );
+
+    const randomVariation = randomIntInRange(-1, 1);
+    const elevationAdjustment = Math.floor(elevationLow / 1000);
+
+    let adjustedIndex = randomVariation + elevationAdjustment + indexOfBaseTemp;
+
+    if (adjustedIndex < 0) {
+      adjustedIndex = 0;
+    } else if (adjustedIndex > temperatureProfiles.length - 1) {
+      adjustedIndex = temperatureProfiles.length - 1;
+    }
+
+    return temperatureProfiles[adjustedIndex];
+  };
+
+  const setPercipitation = (isCoastal, isMountains) => {
     const IndexOfBasePercipitation = percipitationProfiles.findIndex(
       item => item === basePerceipitation
     );
@@ -55,96 +112,60 @@ const Region = props => {
     } else if (adjustedIndex > percipitationProfiles.length - 1) {
       adjustedIndex = percipitationProfiles.length - 1;
     }
-    localPercipitation = percipitationProfiles[adjustedIndex];
+
+    return percipitationProfiles[adjustedIndex];
   };
 
-  const setTemperature = () => {
-    const indexOfBaseTemp = temperatureProfiles.findIndex(
-      item => item === baseTemperature
-    );
-
-    const tempVariation = randomIntInRange(-1, 1);
-
-    let adjustedIndex = tempVariation + indexOfBaseTemp;
-
-    if (adjustedIndex < 0) {
-      adjustedIndex = 0;
-    } else if (adjustedIndex > temperatureProfiles.length - 1) {
-      adjustedIndex = temperatureProfiles.length - 1;
-    }
-    localTemperature =
-      temperatureProfiles[adjustedIndex - adjustTemperatureByElevation()];
-  };
-
-  const adjustTemperatureByElevation = () => {
-    let temperatureAdjustment = Math.floor(elevationLow.low / 1000);
-    return temperatureAdjustment;
-  };
-
-  const determineElevation = () => {
-    let elevationlist = [];
-    let elevationOne =
-      randomIntInRange(1, 4) === 1
-        ? elevationLevels[0]
-        : weightedRandomBag(elevationLevels);
-    let elevationTwo = weightedRandomBag(elevationLevels);
-
-    elevationlist.push(elevationOne, elevationTwo);
-    elevationlist.sort((a, b) => {
-      return a.low - b.low;
-    });
-
-    elevationLow = elevationlist[0];
-    elevationHigh = elevationlist[1];
-  };
-
-  const determineBiome = () => {
-    const tempIdx = temperatureProfiles.findIndex(
-      item => item === localTemperature
-    );
+  const setBiome = (temperature, percipitation) => {
+    const tempIdx = temperatureProfiles.findIndex(item => item === temperature);
     const percipIdx = percipitationProfiles.findIndex(
-      item => item === localPercipitation
+      item => item === percipitation
     );
-    biome = biomeMap[tempIdx][percipIdx];
-    console.log(biomeProfiles.find(element => element.name === biome));
+    let biome = biomeMap[tempIdx][percipIdx];
+    return biomeProfiles.find(element => element.name === biome);
   };
 
-  determineElevation();
-  terrainFeatures(elevationLow, elevationHigh);
-  setTemperature();
-  setPercipitation();
-  determineBiome();
+  const setPopulation = biome => {
+    const totalArea = randomIntInRange(1000, 10000);
+    const habitability = biome.habitability;
+    const populationDensity = 20 * habitability;
+    const population = totalArea * populationDensity;
+    const arableArea = Math.floor(population / 180);
+    const arablePercent = Math.floor((arableArea / totalArea) * 100);
+    const wildArea = Math.floor(totalArea - arableArea);
+    const wildPercent = Math.floor((wildArea / totalArea) * 100);
+    const populationObject = {
+      totalArea,
+      habitability,
+      populationDensity,
+      population,
+      arableArea,
+      arablePercent,
+      wildArea,
+      wildPercent,
+    };
 
-  console.log(elevation);
+    return populationObject;
+  };
+
+  useEffect(() => {
+    createRegion();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
-      <h1>Region</h1>
-      <h2>Geography</h2>
-      <Label text="Area" />
-      <p>{area} sq. miles</p>
-      <Label text="Elevation" />
-      <p>
-        {elevationLow.low} - {elevationHigh.high} meters
-      </p>
-      <Label text="Features" />
-      {isCoastal && <p>Coastal</p>}
-      {isHilly && <p>Hilly</p>}
-      {isMountains && <p>Mountainous</p>}
-      {elevationLow.low < 400 ? <p>Lowlands</p> : <p>Highlands</p>}
-      <h2>Climate</h2>
-      <p>Percipitation: {localPercipitation.name}</p>
-      <p>Temperature: {localTemperature.name}</p>
-      <p>Biome: {biome}</p>
-      <h2>Settlement</h2>
-      <p>Population: {population}</p>
-      <p>
-        Cultivated land: {arableArea} sq.miles {arablePercent}%
-      </p>
-      <p>
-        Wild lands: {wildArea} sq.miles {wildPercent}%
-      </p>
-      <Geography changeElevation={changeElevation} elevation={elevation} />
+      <Card>
+        <h1 style={{ marginBottom: 2 }}>Chalkwood Downs</h1>
+        <TerrainFeatures
+          region={regionData.length > 0 ? regionData : undefined}
+        />
+        <Summary region={regionData.length > 0 ? regionData : undefined} />
+        <Climate region={regionData.length > 0 ? regionData : undefined} />
+        <Geography region={regionData.length > 0 ? regionData : undefined} />
+        <Population region={regionData.length > 0 ? regionData : undefined} />
+      </Card>
     </div>
   );
 };

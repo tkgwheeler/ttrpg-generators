@@ -4,7 +4,7 @@ import React from "react";
 const Card = props => {
   return (
     <div className={CardStyles.frame}>
-      <div className={CardStyles.header}>
+      <div>
         <span>{props.title}</span>
         {props.action}
       </div>

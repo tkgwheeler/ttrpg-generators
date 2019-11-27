@@ -1,83 +1,36 @@
-import React, { useEffect } from "react";
-import { randomIntInRange, weightedRandomBag } from "../../../utils/utils";
-
 import Label from "../../Common/Label/Label";
+import React from "react";
 
 const Geography = props => {
-  useEffect(() => {
-    generateElevation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { region } = props;
 
-  const elevationLow = props.elevation[0];
-  const elevationHigh = props.elevation[1];
+  if (!region) {
+    return <div></div>;
+  }
 
-  const generateElevation = () => {
-    let elevationList = [];
-    let elevationOne =
-      randomIntInRange(1, 4) === 1
-        ? elevationLevels[0]
-        : weightedRandomBag(elevationLevels);
-    let elevationTwo = weightedRandomBag(elevationLevels);
-
-    elevationList.push(elevationOne, elevationTwo);
-    elevationList.sort((a, b) => {
-      return a.low - b.low;
-    });
-
-    props.changeElevation(elevationList);
-  };
+  const {
+    elevation: { low, high },
+    features: { isCoastal, isHilly, isMountains },
+    population,
+  } = region[0];
 
   return (
     <div>
       <h1>Geography</h1>
+      <Label text="Area" />
+      <p>{population.totalArea} miles²</p>
       <Label text="Elevation" />
-      {elevationLow && elevationHigh && (
-        <p>
-          {elevationLow.low} - {elevationHigh.high} meters
-        </p>
-      )}
+      <p>
+        {low.low} - {high.high} meters
+      </p>
+      {(isCoastal || isHilly || isMountains) && <Label text="Features" />}
+      <div>
+        {isCoastal && <span>Coastal</span>}
+        {isHilly && <span>Hilly</span>}
+        {isMountains && <span>Mountainous</span>}
+      </div>
     </div>
   );
 };
 
 export default Geography;
-
-const elevationLevels = [
-  {
-    name: "0-50m",
-    low: 0,
-    high: 50,
-    weight: 3,
-  },
-  {
-    name: "50-200m",
-    low: 50,
-    high: 200,
-    weight: 3,
-  },
-  {
-    name: "200-400m",
-    low: 200,
-    high: 400,
-    weight: 3,
-  },
-  {
-    name: "400-800m",
-    low: 400,
-    high: 800,
-    weight: 3,
-  },
-  {
-    name: "800-1000m",
-    low: 800,
-    high: 1000,
-    weight: 2,
-  },
-  {
-    name: "1000-1400m",
-    low: 1000,
-    high: 1400,
-    weight: 1,
-  },
-];
