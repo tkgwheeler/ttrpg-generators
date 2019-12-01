@@ -17,3 +17,14 @@ export const weightedRandomBag = list => {
   foundItem = items.find(entry => entry.weight >= randomWeight);
   return foundItem;
 };
+
+export const diceRoller = (number, type, modifier) => {
+  let diceroll = 0;
+
+  for (let i = 1; i <= number; i++) {
+    let roll = randomIntInRange(1, type);
+    diceroll += roll;
+  }
+
+  return diceroll + modifier;
+};

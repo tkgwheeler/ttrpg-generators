@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { randomIntInRange, weightedRandomBag } from "../../utils/utils";
 
+import Areas from "../Regions/Areas/Areas";
 import Card from "../Common/Card/Card";
 import Climate from "./Climate/Climate";
 import Geography from "./Geography/Geography";
 import Population from "./Population/Population";
 import Summary from "./Summary/Summary";
-import TerrainFeatures from "./TerrainFeatures/TerrainFeatures";
 
 const Region = () => {
   const [regionData, setRegionData] = useState([]);
@@ -23,8 +23,13 @@ const Region = () => {
       terrain.isCoastal,
       terrain.isMountains
     );
+    const isWetlands = setWetlands(temperature, percipitation, terrain);
     const biome = setBiome(temperature, percipitation);
-    const population = setPopulation(biome);
+    const population = setPopulation(biome, terrain, isWetlands);
+    const weirdLevel =
+      randomIntInRange(1, 5) - Math.round(population.populationDensity / 20);
+
+    terrain.isWetlands = isWetlands;
 
     let regionObject = {
       elevation: {
@@ -36,6 +41,8 @@ const Region = () => {
       percipitation: percipitation,
       biome: biome,
       population: population,
+      wetlands: isWetlands,
+      weirdLevel: weirdLevel,
     };
 
     region.push(regionObject);
@@ -125,10 +132,24 @@ const Region = () => {
     return biomeProfiles.find(element => element.name === biome);
   };
 
-  const setPopulation = biome => {
+  const setPopulation = (biome, terrain, isWetlands) => {
     const totalArea = randomIntInRange(1000, 10000);
-    const habitability = biome.habitability;
-    const populationDensity = 20 * habitability;
+    const biomeHabitability = biome.habitability;
+    const populationBase = 20;
+    let populationModifier = 1;
+
+    if (terrain.isCoastal) {
+      populationModifier = populationModifier + 0.5;
+    }
+    if (terrain.isMountains) {
+      populationModifier = populationModifier - 0.25;
+    }
+    if (isWetlands) {
+      populationModifier = populationModifier - 0.25;
+    }
+
+    const populationDensity =
+      populationBase * populationModifier * biomeHabitability;
     const population = totalArea * populationDensity;
     const arableArea = Math.floor(population / 180);
     const arablePercent = Math.floor((arableArea / totalArea) * 100);
@@ -136,7 +157,7 @@ const Region = () => {
     const wildPercent = Math.floor((wildArea / totalArea) * 100);
     const populationObject = {
       totalArea,
-      habitability,
+      habitability: biomeHabitability,
       populationDensity,
       population,
       arableArea,
@@ -148,22 +169,37 @@ const Region = () => {
     return populationObject;
   };
 
+  const setWetlands = (temperature, percipitation, terrain) => {
+    const temp = temperature.level;
+    const rain = percipitation.level;
+    const isCoastal = terrain.isCoastal;
+
+    const tempEffect = (6 - temp) * 3;
+    const rainEffect = rain / 1.7;
+    const coastalEffect = isCoastal ? 1.15 : 1;
+
+    const initialWetlandsChance = 5;
+    let wetlandsChance =
+      (initialWetlandsChance + tempEffect) * rainEffect * coastalEffect;
+
+    let wetlands = randomIntInRange(1, 100) < wetlandsChance;
+    return wetlands;
+  };
+
   useEffect(() => {
     createRegion();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (regionData.length === 0) {
+    return <div></div>;
+  }
+
   return (
     <div>
       <Card>
-        <h1 style={{ marginBottom: 2 }}>Chalkwood Downs</h1>
-        <TerrainFeatures
-          region={regionData.length > 0 ? regionData : undefined}
-        />
         <Summary region={regionData.length > 0 ? regionData : undefined} />
-        <Climate region={regionData.length > 0 ? regionData : undefined} />
-        <Geography region={regionData.length > 0 ? regionData : undefined} />
         <Population region={regionData.length > 0 ? regionData : undefined} />
       </Card>
     </div>
@@ -171,6 +207,12 @@ const Region = () => {
 };
 
 export default Region;
+
+{
+  /* <Areas region={regionData.length > 0 ? regionData : undefined} />
+<Climate region={regionData.length > 0 ? regionData : undefined} />
+<Geography region={regionData.length > 0 ? regionData : undefined} /> */
+}
 
 const percipitationProfiles = [
   {

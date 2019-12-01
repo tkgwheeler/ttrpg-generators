@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 
-const Settlements = props => {
+const Settlement = props => {
+  const { population } = props;
   return (
     <div>
-      <h1>Settlements</h1>
+      <p>{` A ${
+        population < 500 ? "small" : population > 2500 ? "large" : ""
+      } town of ${population} people`}</p>
     </div>
   );
 };
 
-export default Settlements;
+export default Settlement;
 {
   /* <h2>Settlement</h2>
       <p>Population: {population}</p>
